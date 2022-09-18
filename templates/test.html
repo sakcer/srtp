@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>用户登录</title>
+    {% load static %}
+    <link rel="stylesheet"  href="/static/css/test.css" />
+</head>
+
+<body>
+    <div class="login">
+    <h2>用户登录</h2>
+    <div class="login_box">
+        <!-- required就是不能为空  必须在css效果中有很大的作用 -->
+        <input type="text" name='name' id='name' required  />
+        <label for="name" >用户名</label>
+    </div>
+    <div class="login_box">
+            
+        <input type="password" name='pwd' id='pwd' required="required">
+        <label for="pwd">密码</label>
+    </div>
+    <button>
+        登录
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    </div>
+
+</body>
+</html>
