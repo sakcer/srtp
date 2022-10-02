@@ -2,8 +2,8 @@
 from ffmpeg import audio
 import subprocess
 import os
-audio_path = ""
-finish_path = ""
+audio_path = r'D:/file'
+finish_path = r'D:/file/voice_output1.wav'
 
 # 调整音频播放速率
 def a_speed(input_file, speed, out_file):

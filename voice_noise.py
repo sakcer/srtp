@@ -1,8 +1,8 @@
 #实现音频文件加噪
 import wave
 import numpy as np
-
-f = wave.open('', "rb")
+import matplotlib.pyplot as plt
+f = wave.open(r'D:/file/voice_test.wav', "rb")
 params = f.getparams()
 nchannels, sampwidth, framerate, nframes = params[:4]
 strData = f.readframes(nframes)#读取音频，字符串格式
@@ -10,36 +10,8 @@ waveData = np.fromstring(strData,dtype=np.int16)#将字符串转化为int
 waveData = waveData*1.0/(max(abs(waveData)))#wave幅值归一化
 waveData = np.reshape(waveData,[nframes,nchannels])
 f.close()
-#加入指定信噪比的高斯白噪声
-def awgn(x, snr, out='signal', method='vectorized', axis=0):
-    # Signal power
-    if method == 'vectorized':
-        N = x.size
-        Ps = np.sum(x ** 2 / N)
-    elif method == 'max_en':
-        N = x.shape[axis]
-        Ps = np.max(np.sum(x ** 2 / N, axis=axis))
-    elif method == 'axial':
-        N = x.shape[axis]
-        Ps = np.sum(x ** 2 / N, axis=axis)
-    else:
-        raise ValueError('method \"' + str(method) + '\" not recognized.')
-    # Signal power, in dB
-    Psdb = 10 * np.log10(Ps)
-    # Noise level necessary
-    Pn = Psdb - snr
-    # Noise vector (or matrix)
-    n = np.sqrt(10 ** (Pn / 10)) * np.random.normal(0, 1, x.shape)
-    if out == 'signal':
-        return x + n
-    elif out == 'noise':
-        return n
-    elif out == 'both':
-        return x + n, n
-    else:
-        return x + n
 
-f = wave.open('', "rb")
+f = wave.open(r'D:/file/voice_test1.wav', "rb")
 params = f.getparams()
 nchannels, sampwidth, framerate, nframes = params[:4]
 strData = f.readframes(nframes)#读取音频，字符串格式
@@ -47,7 +19,7 @@ waveData = np.fromstring(strData,dtype=np.int16)#将字符串转化为int
 waveData = waveData*1.0/(max(abs(waveData)))#wave幅值归一化
 waveData = np.reshape(waveData,[nframes,nchannels]).T
 
-g = wave.open('', "rb")
+g = wave.open(r'D:/file/voice_test2.wav', "rb")
 params2 = g.getparams()
 nchannels2, sampwidth2, framerate2, nframes2 = params2[:4]
 strData2 = g.readframes(nframes2)#读取音频，字符串格式
@@ -74,3 +46,49 @@ for i in range(4):
     new[i] = new_waveData
 f.close()
 g.close()
+
+plt.figure(1)
+plt.subplot(2,2,1)
+plt.plot(waveData[0])
+plt.ylabel('Frequency(Hz)')
+plt.xlabel('Time(s)')
+
+plt.subplot(2,2,2)
+plt.plot(waveData[1])
+plt.ylabel('Frequency(Hz)')
+plt.xlabel('Time(s)')
+
+plt.subplot(2,2,3)
+plt.plot(waveData[2])
+plt.ylabel('Frequency(Hz)')
+plt.xlabel('Time(s)')
+
+plt.subplot(2,2,4)
+plt.plot(waveData[3])
+plt.ylabel('Frequency(Hz)')
+plt.xlabel('Time(s)')
+
+
+plt.figure(2)
+plt.subplot(2,2,1)
+plt.plot(new[0])
+plt.ylabel('Frequency(Hz)')
+plt.xlabel('Time(s)')
+
+plt.subplot(2,2,2)
+plt.plot(new[1])
+plt.ylabel('Frequency(Hz)')
+plt.xlabel('Time(s)')
+
+
+plt.subplot(2,2,3)
+plt.plot(new[2])
+plt.ylabel('Frequency(Hz)')
+plt.xlabel('Time(s)')
+
+
+plt.subplot(2,2,4)
+plt.plot(new[3])
+plt.ylabel('Frequency(Hz)')
+plt.xlabel('Time(s)')
+plt.show()
