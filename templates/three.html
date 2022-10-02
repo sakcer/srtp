@@ -1,104 +1,48 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>three.js</title>
-        <link rel="stylesheet"  href="../static/css/three.css" />
-        <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.138.0/build/three.module.js",
-                "OrbitControls": "https://unpkg.com/three@0.138.0/examples/jsm/controls/OrbitControls.js",
-                "GLTFLoader" : "https://unpkg.com/three@0.138.0/examples/jsm/loaders/GLTFLoader.js"
-            }
+
+<head>
+    <meta charset="utf-8">
+    <title>three.js</title>
+    <!-- <link rel="stylesheet" href="../static/css/three.css" /> -->
+    <script type="importmap"> {
+        "imports": {
+            "three": "https://unpkg.com/three@0.138.0/build/three.module.js",
+            "OrbitControls": "https://unpkg.com/three@0.138.0/examples/jsm/controls/OrbitControls.js",
+            "GLTFLoader" : "https://unpkg.com/three@0.138.0/examples/jsm/loaders/GLTFLoader.js"
         }
-        </script> 
-	</head>
+    }
+    </script>
+</head>
+<style>
+    * {
+        /*初始化 清除页面元素的内外边距*/
+        padding: 0;
+        margin: 0;
+        /*盒子模型*/
+        box-sizing: border-box;
+    }
 
-	<body>
-        <canvas id="demo" class="4D"></canvas>
-        <script type="module">
-            import * as THREE from "https://unpkg.com/three@0.138.0/build/three.module.js"
-            import { OrbitControls } from 'OrbitControls';
-            import { GLTFLoader } from 'GLTFLoader';
+    body {
+        /*弹性布局 让页面元素垂直+水平居中*/
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /*让页面始终占浏览器可视区域总高度*/
+        height: 100vh;
+        /*背景渐变色*/
+        background: linear-gradient(#141e30, #243b55);
 
-            function main() {
-                const canvas = document.querySelector('#demo');
-                const renderer = new THREE.WebGLRenderer({canvas});
+    }
+    #demo {
+        width: 100%;
+        height: 100%;
+    }
+</style>
 
-                const fov = 75;
-                const aspect = 2;
-                const near = 0.1;
-                const far =5;
-                const camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
+<body>
+    <canvas id="demo" class="ree"></canvas>
+    <script type="module" src="../static/js/robot.js"></script>
+</body>
 
-                camera.position.z = 2;
-
-                const scene = new THREE.Scene();
-
-                const boxWidth = 1;
-                const boxHeight = 1;
-                const boxDepth = 1;
-
-                const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
-                const material = new THREE.MeshPhongMaterial({color: 0x44aa88});
-
-                const cube = new THREE.Mesh(geometry, material);
-
-                {
-                const color = 0xFFFFFF;
-                const intensity = 1;
-                const light = new THREE.DirectionalLight(color, intensity);
-                light.position.set(-1, 2, 4);
-                scene.add(light);
-                }
-
-                scene.add(cube);
-                function render(time) {
-                    time *= 0.001;
-                    cube.rotation.x = time;
-                    cube.rotation.y = time;
-                    renderer.setClearColor(0x212121, 1.0);
-                    renderer.render( scene, camera );
-                    requestAnimationFrame(render);
-                }
-                requestAnimationFrame(render);
-
-            }
-            main()
-
-            // {
-            // // scene
-            // const scene = new THREE.Scene();
-            // const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-            // // object : cube
-            // const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-            // const material = new THREE.MeshBasicMaterial( { color: 0x212121 } );
-            // const cube = new THREE.Mesh( geometry, material );
-            // scene.add( cube );
-
-            // // 防止相机与物体重合
-            // camera.position.z = 5;
-
-            // // renderer
-            // const renderer = new THREE.WebGLRenderer();
-            // renderer.setSize( window.innerWidth, window.innerHeight );
-            // document.body.appendChild( renderer.domElement );
-
-            // // real render
-            // function animate() {
-            //     requestAnimationFrame( animate );
-            //     cube.rotation.x += 0.01;
-            //     cube.rotation.y += 0.01;
-            //     renderer.setClearColor(0xffffff, 1.0);
-            //     renderer.render( scene, camera );
-            // }
-
-
-            // animate();
-            // }
-		</script>
-	</body>
 </html>
