@@ -1,5 +1,5 @@
 import * as THREE from "https://unpkg.com/three@0.138.0/build/three.module.js"
-// import { OrbitControls } from 'OrbitControls';
+import { OrbitControls } from "https://unpkg.com/three@0.138.0/examples/jsm/controls/OrbitControls.js"
 // import { GLTFLoader } from 'GLTFLoader';
 
 const g_color = 0xddddda;
@@ -197,24 +197,56 @@ function main() {
     // scene
     const scene = new THREE.Scene();
 
-    // let helper = new THREE.GridHelper(1000, 40, 0x303030, 0x303030);
-    // helper.position.y = frustumSize / -2;
-    // scene.add(helper);
-
     // light
-    scene.add(Light());
+    const color = 0xffffff;
+    const intensity = 1;
+    const light = new THREE.DirectionalLight(color, intensity);
+    light.position.set(-50, 40, 200);
+    scene.add(light);
+    // scene.add(Light());
 
     const robot = Robot();
     scene.add(robot);
 
+    let raycaster = new THREE.Raycaster();
+    let mouse = new THREE.Vector2();
+
+    function onMouseMove(event) {
+        // 将鼠标位置归一化为设备坐标。x 和 y 方向的取值范围是 (-1 to +1)
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+    }
+    var controls = new OrbitControls(camera, renderer.domElement);
+    controls.addEventListener('change', render);
+    let intersects; //= raycaster.intersectObjects(scene.children);
+
+    let select;
     function render(time) {
-        time *= 0.001;
-        robot.rotation.x = time;
-        robot.rotation.y = time;
-        robot.rotation.z = time;
+        var vector = camera.position.clone();
+        light.position.set(vector.x, vector.y, vector.z);
+        raycaster.setFromCamera(mouse, camera);
+        intersects = raycaster.intersectObject(scene, true);
+        if (intersects.length > 0) {
+            if (select != intersects[0].object) {
+                if (select) {
+                    select.material.transparent = false;
+                    select.material.opacity = 1;
+                    select.material.emissive.setHex(select.currentHex);
+                }
+                select = intersects[0].object;
+                select.currentHex = select.material.emissive.getHex();//记录当前选择的颜色
+                select.material.emissive.setHex(0x212121);
+            }
+        }
+        // time *= 0.001;
+        // // robot.rotation.x = time;
+        // robot.rotation.y = time;
+        // robot.rotation.z = time;
         renderer.render(scene, camera);
         requestAnimationFrame(render);
     }
-    requestAnimationFrame(render);
+    // requestAnimationFrame(render);
+    window.requestAnimationFrame(render);
+    window.addEventListener('mousemove', onMouseMove, false);
 }
 main()
