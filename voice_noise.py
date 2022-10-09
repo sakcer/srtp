@@ -2,7 +2,7 @@
 import wave
 import numpy as np
 import matplotlib.pyplot as plt
-f = wave.open(r'D:/file/voice_test.wav', "rb")
+f = wave.open(r'D:/file/qqyju-sm7tn.wav', "rb")
 params = f.getparams()
 nchannels, sampwidth, framerate, nframes = params[:4]
 strData = f.readframes(nframes)#读取音频，字符串格式
@@ -11,7 +11,7 @@ waveData = waveData*1.0/(max(abs(waveData)))#wave幅值归一化
 waveData = np.reshape(waveData,[nframes,nchannels])
 f.close()
 
-f = wave.open(r'D:/file/voice_test1.wav', "rb")
+f = wave.open(r'D:/file/qqyju-sm7tn.wav', "rb")
 params = f.getparams()
 nchannels, sampwidth, framerate, nframes = params[:4]
 strData = f.readframes(nframes)#读取音频，字符串格式
@@ -19,7 +19,7 @@ waveData = np.fromstring(strData,dtype=np.int16)#将字符串转化为int
 waveData = waveData*1.0/(max(abs(waveData)))#wave幅值归一化
 waveData = np.reshape(waveData,[nframes,nchannels]).T
 
-g = wave.open(r'D:/file/voice_test2.wav', "rb")
+g = wave.open(r'D:/file/qqyju-sm7tn.wav', "rb")
 params2 = g.getparams()
 nchannels2, sampwidth2, framerate2, nframes2 = params2[:4]
 strData2 = g.readframes(nframes2)#读取音频，字符串格式
@@ -92,3 +92,5 @@ plt.plot(new[3])
 plt.ylabel('Frequency(Hz)')
 plt.xlabel('Time(s)')
 plt.show()
+
+
