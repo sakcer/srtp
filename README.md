@@ -8,3 +8,7 @@ pytorch_test.py：使用pytorch对图片进行简单处理，还在学习试验�
 删除pytorch_test.py  
 新增dataloader.py、dataset_transform.py、tensor_tb.py、transforms_test.py、UsefulTransforms.py  
 汇报pytorch学习进度
+
+## 第三周上传文件：  
+新增nn_conv.py、nn_conv2.py、nn_module.py  
+对图像进一步处理
