@@ -2,30 +2,51 @@
 import wave
 import numpy as np
 import matplotlib.pyplot as plt
-f = wave.open(r'D:/file/qqyju-sm7tn.wav', "rb")
-params = f.getparams()
-nchannels, sampwidth, framerate, nframes = params[:4]
-strData = f.readframes(nframes)#读取音频，字符串格式
-waveData = np.fromstring(strData,dtype=np.int16)#将字符串转化为int
-waveData = waveData*1.0/(max(abs(waveData)))#wave幅值归一化
-waveData = np.reshape(waveData,[nframes,nchannels])
-f.close()
+import soundfile as sf
+import sys
+import os
+import re
 
-f = wave.open(r'D:/file/qqyju-sm7tn.wav', "rb")
-params = f.getparams()
-nchannels, sampwidth, framerate, nframes = params[:4]
-strData = f.readframes(nframes)#读取音频，字符串格式
-waveData = np.fromstring(strData,dtype=np.int16)#将字符串转化为int
-waveData = waveData*1.0/(max(abs(waveData)))#wave幅值归一化
-waveData = np.reshape(waveData,[nframes,nchannels]).T
+def add_noise(noisedir,cleandir,snr):
+    # noisy
+    splitdir=re.split(r"\\",noisedir)
+    wavdir="" # 所有wav文件所在路径
+    for i in range(len(splitdir) - 1):
+        wavdir += splitdir[i] + '/'
+    noisydir=wavdir+"noisy/"  # 带噪语音存储路径
+    os.mkdir(noisydir)
+    # noise
+    for noisewav in os.listdir(noisedir):
+        noise, fs = sf.read(noisedir+'/'+noisewav)
+        noisy_splitdir=noisydir+"add_"+noisewav[:-4]+"/"
+        os.mkdir(noisy_splitdir)
+    # clean
+        for cleanwav in os.listdir(cleandir):
+            clean, Fs = sf.read(cleandir+"/"+cleanwav)
+            # add noise
+            if fs == Fs and len(clean) <= len(noise):
+            	# 纯净语音能量
+                cleanenergy = np.sum(np.power(clean,2))
+                # 随机索引与clean长度相同的noise信号
+                ind = np.random.randint(1, len(noise) - len(clean) + 1)
+                noiselen=noise[ind:len(clean) + ind]
+                # 噪声语音能量
+                noiseenergy = np.sum(np.power(noiselen,2))
+                # 噪声等级系数
+                noiseratio = np.sqrt((cleanenergy / noiseenergy) / (np.power(10, snr * 0.1)))
+                # 随机索引与clean长度相同的noise信号
+                noisyAudio = clean + noise[ind:len(clean)+ind] * noiseratio
+                # write wav
+                noisywavname=noisy_splitdir+cleanwav[:-4]+"_"+noisewav[:-4]+"_snr"+str(snr)+".wav"
+                sf.write(noisywavname, noisyAudio, 16000)
+            else:
+                print("fs of clean and noise is unequal or the length of clean is longer than noise's\n")
+                sys.exit(-1)
 
-g = wave.open(r'D:/file/qqyju-sm7tn.wav', "rb")
-params2 = g.getparams()
-nchannels2, sampwidth2, framerate2, nframes2 = params2[:4]
-strData2 = g.readframes(nframes2)#读取音频，字符串格式
-waveData2 = np.frombuffer(strData2,dtype=np.int16)#将字符串转化为int
-waveData2 = waveData2*1.0/(max(abs(waveData2)))#wave幅值归一化
-waveData2 = np.reshape(waveData2,[nframes2,nchannels2]).T
+noisedir=r"D:/file/noise"
+cleandir=r"D:/file/clean"
+snr=5
+add_noise(noisedir,cleandir,snr)
 
 new = np.zeros(shape=(4,nframes))
 for i in range(4):
