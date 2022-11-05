@@ -1,23 +1,33 @@
-*{
+* {
 	/*初始化 清除页面元素的内外边距*/
 	padding: 0;
 	margin: 0;
 	/*盒子模型*/
 	box-sizing: border-box;
 }
+
+html {
+	height: 100%;
+}
+
+
+
 body {
 	/*弹性布局 让页面元素垂直+水平居中*/
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	/*让页面始终占浏览器可视区域总高度*/
-	height: 100vh;
+	height: 100%;
+	width: 100%;
 	/*背景渐变色*/
-	background: linear-gradient(#141e30,#243b55);
- 
+	background: linear-gradient(#141e30, #243b55);
+
 }
-.login{
+
+.login {
 	/*弹性布局 让子元素称为弹性项目*/
+	position: absolute;
 	display: flex;
 	/*让弹性项目垂直排列  原理是改变弹性盒子的主轴方向  
 	父元素就是弹性盒子  现在改变后的主轴方向是向下了*/
@@ -29,19 +39,21 @@ body {
 	padding: 40px;
 	background-color: rgba(0, 0, 0, 0.2);
 	box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
- 
+
 }
- 
-.login h2{
+
+.login h2 {
 	color: #fff;
 	margin-bottom: 30px;
 }
+
 .login .login_box {
 	/*相对定位*/
 	position: relative;
 	width: 100%;
 }
-.login .login_box input{
+
+.login .login_box input {
 	/*清除input框自带的边框和轮廓*/
 	outline: none;
 	border: none;
@@ -54,10 +66,10 @@ body {
 	/*背景颜色为透明色*/
 	background-color: transparent;
 }
- 
-.login .login_box label{
-	position:absolute;
-	top: 0 ;
+
+.login .login_box label {
+	position: absolute;
+	top: 0;
 	left: 0;
 	padding: 10px 0;
 	color: #fff;
@@ -69,6 +81,7 @@ body {
 	/*加个过度*/
 	transition: all 0.5s;
 }
+
 /*: focus 选择器是当input获得焦点是触发的样式 + 是相邻兄弟选择器
 	去找与input相邻的兄弟label*/
 /*：valid 选择器是判断input 框的内容是否合法，如果合法会执行下面的属性代码，
@@ -77,18 +90,18 @@ body {
 	但是密码不会，密码框的值为空，那么这句话就不合法，required不能为空
 	当我们给密码框写点东西的时候才会执行以下代码
 */
-.login .login_box input:focus + label,
-.login  .login_box input:valid + label{
+.login .login_box input:focus+label,
+.login .login_box input:valid+label {
 	top: -20px;
 	color: #03e9f4;
 	font-size: 12px;
 }
- 
-.login button{
+
+.login button {
 	/*overflow: hidden;*/
 	position: relative;
 	padding: 10px 20px;
-    outline: none;
+	outline: none;
 	border: none;
 	background-color: transparent;
 	color: #03e9f4;
@@ -96,97 +109,106 @@ body {
 	text-decoration: none;
 	/*同样加个过渡*/
 	transition: all 0.5s;
-    font-size: 18px;
+	font-size: 18px;
 }
+
 .login button:hover {
 	color: #fff;
 	border-radius: 5px;
 	background-color: #03e9f4;
-	box-shadow: 0 0 5px #03e9f4,0 0 25px #03e9f4,0 0 50px #03e9f4,0 0 100px #03e9f4;
+	box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
 }
-.login button span{
+
+.login button span {
 	position: absolute;
 }
+
 .login button span:first-child {
 	top: 0;
 	left: -100%;
 	width: 100%;
 	height: 2px;
 	/*to right 就是往右边 下面的同理*/
-	background: linear-gradient(to right,transparent,#03e9f4);
+	background: linear-gradient(to right, transparent, #03e9f4);
 	/*动画 名称  时长 linear是匀速运动 infinite是无限次运动*/
 	animation: move1 1s linear infinite;
- 
+
 }
-.login button span:nth-child(2){
+
+.login button span:nth-child(2) {
 	right: 0;
 	top: -100%;
 	width: 2px;
 	height: 100%;
-	background: linear-gradient(transparent,#03e6f4);
+	background: linear-gradient(transparent, #03e6f4);
 	/*这里多了个0.25s其实是延迟时间*/
 	animation: move2 1s linear 0.25s infinite;
 }
- 
-.login button span:nth-child(3){
+
+.login button span:nth-child(3) {
 	right: -100%;
 	bottom: 0;
 	width: 100%;
 	height: 2px;
-	background: linear-gradient(to left,transparent,#03e9f4);
- 
+	background: linear-gradient(to left, transparent, #03e9f4);
+
 	animation: move3 1s linear 0.5s infinite;
 }
- 
-.login button span:last-child{
+
+.login button span:last-child {
 	left: 0;
 	bottom: -100%;
 	width: 2px;
 	height: 100%;
-	background: linear-gradient(#03e9f4,transparent);
+	background: linear-gradient(#03e9f4, transparent);
 	animation: move4 1s linear 0.75s infinite;
 }
+
 /*写一下动画 */
-@keyframes move1{
-	0%{
+@keyframes move1 {
+	0% {
 		left: -100%;
- 
+
 	}
+
 	50%,
-	100%{
+	100% {
 		left: 100%;
 	}
 }
- 
-@keyframes move2{
-	0%{
+
+@keyframes move2 {
+	0% {
 		top: -100%;
- 
+
 	}
+
 	50%,
-	100%{
+	100% {
 		top: 100%;
 	}
 }
- 
-@keyframes move3{
-	0%{
+
+@keyframes move3 {
+	0% {
 		right: -100%;
- 
+
 	}
+
 	50%,
-	100%{
+	100% {
 		right: 100%;
 	}
 }
- 
-@keyframes move4{
-	0%{
+
+@keyframes move4 {
+	0% {
 		bottom: -100%;
- 
+
 	}
+
 	50%,
-	100%{
+	100% {
 		bottom: 100%;
 	}
 }

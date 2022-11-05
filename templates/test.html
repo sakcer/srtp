@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="zh-CN">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
@@ -9,31 +10,66 @@
     <!-- {% load static %}
     <link rel="stylesheet"  href="/static/css/test.css" /> -->
     <!-- for html -->
-    <link rel="stylesheet"  href="../static/css/test.css" />
+    <link rel="stylesheet" href="../static/css/test.css" />
+    <link rel="stylesheet" href="../static/css/captcha.css" />
 </head>
 
 <body>
+    <div id="musk"
+        style="width:100%;height:100%;position:absolute;z-index:2;display:none;background-color:rgba(0,0,0,0.5);"></div>
     <div class="login">
-    <h2>用户登录</h2>
-    <div class="login_box">
-        <!-- required就是不能为空  必须在css效果中有很大的作用 -->
-        <input type="text" name='name' id='name' required  />
-        <label for="name" >用户名</label>
-    </div>
-    <div class="login_box">
-            
-        <input type="password" name='pwd' id='pwd' required="required">
-        <label for="pwd">密码</label>
-    </div>
-    <button>
-        登录
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
-
+        <h2>用户登录</h2>
+        <div class="login_box">
+            <!-- required就是不能为空  必须在css效果中有很大的作用 -->
+            <input type="text" name='name' id='name' required />
+            <label for="name">用户名</label>
+        </div>
+        <div class="login_box">
+            <input type="password" name='pwd' id='pwd' required="required">
+            <label for="pwd">密码</label>
+        </div>
+        <button onclick="display_captcha()">
+            登录
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </div>
 
+    <!--遮罩层-->
+    <div id="captcha">
+        <span id="pdclose" onclick="hide_captcha()"></span>
+        <div id="captcha_layout">
+            <div style="width:50%;height:100%;border:1px solid;position:absolute;">
+                <div>
+                    <p style="color:#fff;font-style:bold;font-family:Sans-serif;font-size:1.5em">题目：
+                    <p>
+                </div>
+                <div id="img">
+                    <img style="max-width:100%;max-height:100%"
+                        src="https://img0.baidu.com/it/u=1209024016,3871468191&fm=253&fmt=auto&app=138&f=JPEG?w=647&h=500">
+                </div>
+            </div>
+            <div id="captcha_right">
+                <canvas id="four_dimension" class="captcha">
+                </canvas>
+            </div>
+        </div>
+    </div>
+    <script>
+        function display_captcha() {
+            if (document.getElementById("captcha")) {
+                document.getElementById("captcha").style.visibility = "visible";
+                document.getElementById("musk").style.display = "block";
+            }
+        };
+        function hide_captcha() {
+            document.getElementById("musk").style.display = "none";
+            document.getElementById('captcha').style.visibility = 'hidden';
+        }
+    </script>
+    <script type="module" src="../static/js/robot.js"></script>
 </body>
+
 </html>
